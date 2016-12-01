@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <description>{{ meta.description|default("No description") }}</description>
+  <keepDependencies>{{ meta.keep_dependencies|default(false) }}</keepDependencies>
+  <displayName>{{ meta.display_name|default(display_name)|default(id) }}</displayName>
+  <blockBuildWhenDownstreamBuilding>{{ meta.block_downstream|default(false) }}</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>{{ meta.block_upstream|default(false) }}</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>{{ meta.concurrent_build|default(false) }}</concurrentBuild>
+  <canRoam>{{ meta.can_roam|default(true) }}</canRoam>
+  {% if assigned_node|default(false) %}
+    <assignedNode>{{ assigned_node|default('') }}</assignedNode>
+  {% endif %}
+  <actions>
+    {%- for action in actions %}
+    {{ action|indent(4) }}
+    {%- endfor %}
+  </actions>
+  <properties>
+    {%- for property in properties %}
+    {{ property|indent(4) }}
+    {%- endfor %}
+  </properties>
+  {%- for scm in scms %}
+  {{ scm|indent(2) }}
+  {%- endfor %}
+  {% if scms|length == 0 %}
+  <scm class="hudson.scm.NullSCM"/>
+  {% endif -%}
+  <triggers class="vector">
+    {%- for trigger in triggers %}
+    {{ trigger|indent(4) }}
+    {%- endfor %}
+  </triggers>
+  <builders>
+    {%- for builder in builders %}
+    {{ builder|indent(4) }}
+    {%- endfor %}
+  </builders>
+  <publishers>
+    {%- for publisher in publishers %}
+    {{ publisher|indent(4) }}
+    {%- endfor %}
+  </publishers>
+  <buildWrappers>
+    {%- for wrapper in wrappers %}
+    {{ wrapper|indent(4) }}
+    {%- endfor %}
+  </buildWrappers>
+</project>

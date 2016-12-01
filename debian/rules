@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+export DH_VERBOSE = 1
+
+export PYBUILD_NAME=jenkey
+export PY_INTERPRETER=/usr/bin/python3
+
+%:
+	dh $@  --with python3 --buildsystem=pybuild
+
+override_dh_install:
+	python3 setup.py install --root=$(CURDIR)/debian/python3-$(PYBUILD_NAME) --install-layout=deb
+	dh_install
+	dh_python3
+
+clean:
+	rm -rf build
+	rm -rf $(PYBUILD_NAME).egg-info
+	dh_clean

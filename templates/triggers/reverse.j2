@@ -1,0 +1,11 @@
+<jenkins.triggers.ReverseBuildTrigger>
+  <spec/>
+  <upstreamProjects>{{ jobs }}</upstreamProjects>
+  <threshold>
+    <name>{{ result|default('SUCCESS')|upper }}</name>
+    <ordinal>0</ordinal>
+    <color>BLUE</color>
+    <completeBuild>true</completeBuild>
+  </threshold>
+</jenkins.triggers.ReverseBuildTrigger>
+

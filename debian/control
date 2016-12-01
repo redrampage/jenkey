@@ -1,0 +1,32 @@
+Source: jenkey
+Section: admin
+Priority: optional
+Maintainer: RedRampage <redrampage@gmail.com>
+Build-Depends: debhelper (>=9),dh-python,python3-setuptools,python3-all
+Standards-Version: 3.9.6
+X-Python3-Version: >= 3.2
+#Vcs-Git: git://anonscm.debian.org/collab-maint/jenkey.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/jenkey.git
+
+Package: python3-jenkey
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}
+Suggests: python-jenkey-templates
+Description: Python DSL to automate jenkins job creation. (Python 3)
+ Jenkey is a simple python DSL implementation that allows to describe 
+ and generate Jenkins jobs and views.
+ A tool simillar to jenkins-job-builder, but more simplier and flexible.
+ .
+ This package installs the library for Python 3.
+
+Package: python3-jenkey-templates
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}, python-jenkey
+Suggests: python-jenkey-templates
+Description: A set of premade templates for Jenkey. (Python 3)
+ Jenkey is a simple python DSL implementation that allows to describe 
+ and generate Jenkins jobs and views.
+ A tool simillar to jenkins-job-builder, but more simplier and flexible.
+ A set of premade element templates for Jenkey.
+ .
+ This package installs the library for Python 3.

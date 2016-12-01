@@ -1,0 +1,51 @@
+{% macro buildSelector(selector) %}
+{% if   "last-successful" == selector %}
+<selector class="hudson.plugins.copyartifact.StatusBuildSelector">
+   <stable>{{ stable|default(false) }}</stable>
+</selector>
+{% elif "last-completed" == selector %}
+<selector class="hudson.plugins.copyartifact.LastCompletedBuildSelector"/>
+{% elif "upstream-build" == selector %}
+<selector class="hudson.plugins.copyartifact.TriggeredBuildSelector">
+  <fallbackToLastSuccessful>{{ fallback_to_last_successful|default(true) }}</fallbackToLastSuccessful>
+  <upstreamFilterStrategy>{{ filter_strategy|default('UseGlobalSetting') }}</upstreamFilterStrategy>
+  <allowUpstreamDependencies>{{ allow_upstream_dependency|default(false) }}</allowUpstreamDependencies>
+</selector>
+{% elif "last-saved" == selector %}
+<selector class="hudson.plugins.copyartifact.SavedBuildSelector"/>
+{% elif "downstream-build" == selector %}
+<selector class="hudson.plugins.copyartifact.DownstreamBuildSelector">
+  <upstreamProjectName>{{ upstream_project_name }}</upstreamProjectName>
+  <upstreamBuildNumber>{{ upstream_project_number}}</upstreamBuildNumber>
+</selector>
+{% elif "premalink" == selector %}
+<selector class="hudson.plugins.copyartifact.PermalinkBuildSelector">
+  <id>{{ premalink }}</id>
+</selector>
+{% elif "specific-build" == selector %}
+<selector class="hudson.plugins.copyartifact.SpecificBuildSelector">
+  <buildNumber>{{ build_number }}</buildNumber>
+</selector>
+{% elif "workspace-latest" == selector %}
+<selector class="hudson.plugins.copyartifact.WorkspaceSelector"/>
+{% elif "build-param" == selector %}
+<selector class="hudson.plugins.copyartifact.ParameterizedBuildSelector">
+  <parameterName>{{ build_selector_var|default('BUILD_SELECTOR') }}</parameterName>
+</selector>
+{% else %}
+{{ ERROR_Unsupported_build_selector }}
+{% endif %}
+{% endmacro -%}
+
+
+<hudson.plugins.copyartifact.CopyArtifact>
+  <project>{{ project }}</project>
+  <filter>{{ filter|default('') }}</filter>
+  <target>{{ target|default('') }}</target>
+  <flatten>{{ flatten|default(false) }}</flatten>
+  <optional>{{ optional|default(false) }}</optional>
+  <doNotFingerprintArtifacts>{{ do_not_fingerprint|default(false) }}</doNotFingerprintArtifacts>
+  <parameters>{{ parameter_filters|default('') }}</parameters>
+  {{ buildSelector(which_build) }}
+</hudson.plugins.copyartifact.CopyArtifact>
+

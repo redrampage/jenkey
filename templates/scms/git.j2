@@ -1,0 +1,40 @@
+<scm class="hudson.plugins.git.GitSCM" plugin="git@3.0.1">
+  <configVersion>2</configVersion>
+  <userRemoteConfigs>
+    {%- for remote in remotes %}
+    <hudson.plugins.git.UserRemoteConfig>
+      <url>{{ remote.url }}</url>
+      <name>{{ remote.name|default('') }}</name>
+      <refspec>{{ remote.refspec|default('') }}</refspec>
+      <credentialsId>{{ remote.creds_id|default(creds_id)|default('') }}</credentialsId>
+    </hudson.plugins.git.UserRemoteConfig>
+    {% endfor -%}
+  </userRemoteConfigs>
+  <branches>
+    {%- for branch in branches|default(['*/master']) %}
+    <hudson.plugins.git.BranchSpec>
+      <name>{{ branch }}</name>
+    </hudson.plugins.git.BranchSpec>
+    {% endfor -%}
+  </branches>
+  <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+  <submoduleCfg class="list"/>
+  <extensions>
+    {% if clean_checkout|default(false) %}
+    <hudson.plugins.git.extensions.impl.CleanCheckout/>
+    {% endif -%}
+	{%- if 	disable_submodules is defined or
+          	recursive_submodules is defined or
+		    tracking_submodules is defined or
+			submodule_reference is defined or
+			parent_credentials is defined %}
+    <hudson.plugins.git.extensions.impl.SubmoduleOption>
+      <disableSubmodules>{{ disable_submodules|default(false) }}</disableSubmodules>
+      <recursiveSubmodules>{{ recursive_submodules|default(false) }}</recursiveSubmodules>
+      <trackingSubmodules>{{ tracking_submodules|default(false) }}</trackingSubmodules>
+      <reference>{{ submodule_reference|default('') }}</reference>
+      <parentCredentials>{{ parent_credentials|default(false) }}</parentCredentials>
+    </hudson.plugins.git.extensions.impl.SubmoduleOption>
+    {% endif -%}
+  </extensions>
+</scm>

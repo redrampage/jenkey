@@ -1,0 +1,9 @@
+<hudson.tasks.ArtifactArchiver>
+  <artifacts>{{ artifacts }}</artifacts>
+  <excludes>{{ excludes|default('') }}</excludes>
+  <allowEmptyArchive>{{ allow_empty|default(false) }}</allowEmptyArchive>
+  <onlyIfSuccessful>{{ only_if_success|default(false) }}</onlyIfSuccessful>
+  <fingerprint>{{ fingerprint|default(false) }}</fingerprint>
+  <defaultExcludes>{{ default_excludes|default(true) }}</defaultExcludes>
+  <caseSensitive>{{ casesensitive|default(false) }}</caseSensitive>
+</hudson.tasks.ArtifactArchiver>
