@@ -28,6 +28,8 @@ class JenkinsUpdater(Jenkins):
         log.info("Processing project '{}'".format(project.vars.get('project_name', 'unknown')))
         for job in project.getJobs().values():
             self._push_job(job)
+            if job.vars.get("min_build_number"):
+                self.set_next_build_number(job.id, job.vars.get("min_build_number", 1))
 
         view_name, view_xml = project.getView()
         try:
